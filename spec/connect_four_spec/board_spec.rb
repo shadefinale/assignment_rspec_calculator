@@ -13,7 +13,7 @@ describe Board do
       end
 
       it "should be empty" do
-        0.upto(5) do |idx|
+        0.upto(6) do |idx|
           expect(board.state[idx]).to eq([])
         end
       end
@@ -23,7 +23,7 @@ describe Board do
 
   context "New Copied Board" do
 
-    let(:board){Board.new([[0],[0,1],[1,0,1],[],[],[]])}
+    let(:board){Board.new([[0],[0,1],[1,0,1],[],[],[],[]])}
 
     describe "#initialize" do
       it "should initialize as a Board" do
@@ -89,14 +89,20 @@ describe Board do
 
     describe "#full?" do
 
-      let(:board){Board.new([[1,0,1,1,0,1],[1,0,1,1,0,1],[1,0,1,1,0,1],[0,1,0,1,0,1],[0,1,0,1,0,1],[0,1,0,1,0]])}
+      let(:board){Board.new([[1,0,1,0,1,0],
+                             [1,0,1,0,1,0],
+                             [1,0,1,0,1,0],
+                             [0,1,0,1,0,1],
+                             [0,1,0,1,0,1],
+                             [1,0,1,0,1,0],
+                             [0,1,0,1,0]])}
 
       it "should return false if board is not full" do
         expect(board.full?).to be false
       end
 
       it "should be true if board is full" do
-        board.move([5,0])
+        board.move([6,0])
         expect(board.full?).to be true
       end
     end
@@ -108,7 +114,7 @@ describe Board do
       end
 
       context "horizontal_winner" do
-        let(:board) {Board.new([[],[],[0,1],[],[0,1],[0,1]])}
+        let(:board) {Board.new([[],[],[0,1],[],[0,1],[0,1],[]])}
         it "shouldn't return winner if not horizontal winner" do
           expect(board.winner).to be_nil
         end
@@ -136,7 +142,7 @@ describe Board do
 
       context "vertical_winner" do
 
-        let(:board_vertical) {Board.new([[0,0,0],[1,1,1],[],[],[],[]])}
+        let(:board_vertical) {Board.new([[0,0,0],[1,1,1],[],[],[],[],[]])}
 
         it "shouldn't return winner if not vertical winner" do
           expect(board_vertical.winner).to be_nil
@@ -157,7 +163,7 @@ describe Board do
 
       context "forwardslash_winner" do
 
-        let(:board_forwardslash) {Board.new([[0],[1,0],[0,1,0],[1,1,1],[],[]])}
+        let(:board_forwardslash) {Board.new([[0],[1,0],[0,1,0],[1,1,1],[],[],[]])}
 
         it "shouldn't return winner if not forwardslash winner" do
           expect(board_forwardslash.winner).to be_nil
@@ -172,14 +178,14 @@ describe Board do
 
       context "backslash_winner" do
 
-        let(:board_backslash) {Board.new([[],[],[1,0,1],[0,1,0],[1,0],[0]])}
+        let(:board_backslash) {Board.new([[],[],[],[1,0,1],[0,1,0],[1,0],[0]])}
 
         it "should not return winner if not backslash winner" do
           expect(board_backslash.winner).to be_nil
         end
 
         it "should return winner if there's a backslash win" do
-          board_backslash.move([2,0])
+          board_backslash.move([3,0])
           expect(board_backslash.winner).to eq(0)
         end
 

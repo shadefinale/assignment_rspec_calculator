@@ -10,7 +10,7 @@ class Board
   # new board objects with the same internal state but
   # with different object ids. (Deep Duplication)
   # The default state is an array of columns
-  def initialize(state = [[],[],[],[],[],[],[]])
+  def initialize(state = Array.new(7) {|column| column = []})
     @state = []
     state.each do |col|
       @state << col.dup
@@ -21,7 +21,7 @@ class Board
   # The args array takes the column number, and the player who
   # is making the move.
   def move(args)
-    @state[args[0]] << args[1]
+    @state[args[0]] << args[1] unless col_full?(args[0])
   end
 
   # Will return the first type of win condition that is not nil.
@@ -40,21 +40,21 @@ class Board
   # Visually represents the board to the player.
   def display
     # Board width is a variable so we don't have constants all over this method
-    board_width = 33
+    draw_width = (BOARD_WIDTH * BOARD_HEIGHT)- 4
     puts ""
-    print " " * ((board_width - 5)/2)
+    print " " * ((draw_width - 5)/2 + 1)
     print "Board"
     puts ""
-    print "-" * board_width
+    print "-" * draw_width
     puts ""
-    (BOARD_WIDTH-1).downto(0) do |idx|
-      0.upto(5) do |pos|
+    (BOARD_HEIGHT-1).downto(0) do |idx|
+      0.upto(BOARD_WIDTH-1) do |pos|
         print " | "
         @state[pos][idx]? (print "#{pretty_disc(@state[pos][idx])} ") : (print "  ")
       end
       print " | "
       puts ""
-      print "-" * board_width
+      print "-" * draw_width
       puts ""
     end
   end
@@ -71,7 +71,7 @@ class Board
 
     def horizontal_winner
       0.upto(BOARD_HEIGHT-1) do |row|
-        0.upto(CONNECT_SIZE-1) do |col|
+        0.upto(BOARD_WIDTH-CONNECT_SIZE) do |col|
           if (@state[0 + col][row] == @state[1 + col][row]) &&
           (@state[0 + col][row] == @state[2 + col][row]) &&
           (@state[0 + col][row] == @state[3 + col][row])
@@ -83,8 +83,8 @@ class Board
     end
 
     def vertical_winner
-      0.upto(5) do |col|
-        0.upto(2) do |row|
+      0.upto(BOARD_HEIGHT) do |col|
+        0.upto(BOARD_WIDTH-CONNECT_SIZE) do |row|
           if (@state[col][0 + row] == @state[col][1 + row]) &&
             (@state[col][0 + row] == @state[col][2 + row]) &&
             (@state[col][0 + row] == @state[col][3 + row])
@@ -96,8 +96,8 @@ class Board
     end
 
     def backslash_winner
-      5.downto(3) do |row|
-        0.upto(2) do |col|
+      (BOARD_HEIGHT-1).downto(BOARD_HEIGHT-3) do |row|
+        0.upto(BOARD_WIDTH-CONNECT_SIZE) do |col|
           if (@state[col][row] == @state[col + 1][row - 1]) &&
             (@state[col][row] == @state[col + 2][row - 2]) &&
             (@state[col][row] == @state[col + 3][row - 3])
@@ -110,8 +110,8 @@ class Board
     end
 
     def forwardslash_winner
-      0.upto(2) do |row|
-        0.upto(2) do |col|
+      0.upto(BOARD_HEIGHT-CONNECT_SIZE) do |row|
+        0.upto(BOARD_WIDTH-CONNECT_SIZE) do |col|
           if (@state[col][row] == @state[1 + col][1 + row]) &&
             (@state[col][row] == @state[2 + col][2 + row]) &&
             (@state[col][row] == @state[3 + col][3 + row])

@@ -52,35 +52,35 @@ describe AI do
     context "winning moves" do
 
       it "should find a horzontal winning move" do
-        new_board = Board.new([[],[],[0,1],[],[0,1],[0,1]])
+        new_board = Board.new([[],[],[],[0,1],[],[0,1],[0,1]])
         ai = AI.new(new_board, 0)
-        expect(ai.move).to eq(3)
+        expect(ai.move).to eq(4)
 
-        new_board = Board.new([[0,1],[0,1],[],[0,1],[0,1],[0,1]])
+        new_board = Board.new([[0,1],[0,1],[],[0,1],[0,1],[0,1],[]])
         ai = AI.new(new_board, 0)
         expect(ai.move).to eq(2)
       end
 
       it "should find a vertical winning move" do
-        new_board = Board.new([[0,0,0],[1,1,1],[],[],[],[]])
+        new_board = Board.new([[0,0,0],[1,1,1],[],[],[],[],[]])
         ai = AI.new(new_board, 0)
         expect(ai.move).to eq(0)
       end
 
       it "should find a bottom-left to upper-right winning move" do
-        new_board = Board.new([[0],[1,0],[0,1,0],[1,1,1],[],[]])
+        new_board = Board.new([[0],[1,0],[0,1,0],[1,1,1],[],[],[]])
         ai = AI.new(new_board, 0)
         expect(ai.move).to eq(3)
       end
 
       it "should find a top-left to bottom-right winning move" do
-        new_board = Board.new([[],[],[1,0,1],[0,1,0],[1,0],[0]])
+        new_board = Board.new([[],[],[],[1,0,1],[0,1,0],[1,0],[0]])
         ai = AI.new(new_board, 0)
-        expect(ai.move).to eq(2)
+        expect(ai.move).to eq(3)
       end
 
       it "should prefer winning to not-losing" do
-        new_board = Board.new([[0,0,0],[1,1,1],[0],[],[],[]])
+        new_board = Board.new([[0,0,0],[1,1,1],[0],[],[],[],[]])
         ai = AI.new(new_board, 1)
         expect(ai.move).to eq(1)
       end
@@ -88,32 +88,50 @@ describe AI do
 
     context "loss avoiding moves" do
       it "should find a vertical loss preventing move" do
-        new_board = Board.new([[0,0,0],[1,1],[1],[],[],[]])
+        new_board = Board.new([[0,0,0],[1,1],[1],[],[],[],[]])
         ai = AI.new(new_board, 1)
         expect(ai.move).to eq(0)
       end
 
       it "should find a horizontal loss preventing move" do
-        new_board = Board.new([[0],[],[0,1],[],[0,1],[0,1]])
+        new_board = Board.new([[0],[],[0,1],[],[0,1],[0,1],[]])
         ai = AI.new(new_board, 1)
         expect(ai.move).to eq(3)
 
-        new_board = Board.new([[0,1,0],[0,1],[],[0,1],[0,1],[0,1]])
+        new_board = Board.new([[0,1,0],[0,1],[],[0,1],[0,1],[0,1],[]])
         ai = AI.new(new_board, 1)
         expect(ai.move).to eq(2)
       end
 
       it "should find a bottom-left to upper-right loss preventing move" do
-        new_board = Board.new([[0],[1,0],[0,1,0],[1,1,1],[],[0]])
+        new_board = Board.new([[0],[1,0],[0,1,0],[1,1,1],[],[0],[]])
         ai = AI.new(new_board, 1)
         expect(ai.move).to eq(3)
       end
 
       it "should find a top-left to bottom-right loss preventing move" do
-        new_board = Board.new([[],[],[1,0,1],[0,1,0],[1,0],[0,0]])
+        new_board = Board.new([[],[],[1,0,1],[0,1,0],[1,0],[0,0],[]])
         ai = AI.new(new_board, 1)
         expect(ai.move).to eq(2)
       end
+    end
+
+    context "edge cases" do
+
+      it "should return nil as move if board is full for some reason" do
+        new_board = Board.new([[1,0,1,0,1,0],
+                               [1,0,1,0,1,0],
+                               [1,0,1,0,1,0],
+                               [0,1,0,1,0,1],
+                               [0,1,0,1,0,1],
+                               [1,0,1,0,1,0],
+                               [0,1,0,1,0,0]])
+        ai = AI.new(new_board, 0)
+        expect(ai.move).to be_nil
+        ai = AI.new(new_board, 1)
+        expect(ai.move).to be_nil
+      end
+
     end
 
   end
@@ -127,17 +145,13 @@ describe Player do
   describe "#move" do
 
     it "should ask for input again one time if not between 1 and 6" do
-
-      allow(player_1).to receive(:gets).and_return("7","1")
+      allow(player_1).to receive(:gets).and_return("8","1")
       expect(player_1.move).to eq(0)
-
     end
 
     it "should ask for input multiple times until valid" do
-
-      allow(player_1).to receive(:gets).and_return("7","8","10","p","whasd", "3")
+      allow(player_1).to receive(:gets).and_return("-7","8","10","p","whasd", "3")
       expect(player_1.move).to eq(2)
-
     end
 
   end

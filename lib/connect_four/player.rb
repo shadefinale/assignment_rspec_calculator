@@ -45,7 +45,7 @@ class AI < Player
     # Simulates all next moves of the selected player and returns if any
     # of those moves wins the game for said player.
     def simulate_move(player)
-      moves = (0..5).to_a
+      moves = (0..6).to_a
       moves.each do |col|
         sim_board = board_copy
         unless sim_board.col_full?(col)
@@ -67,7 +67,7 @@ class AI < Player
     # good candidate for a not-losing or winning move.
     # Avoids full columns.
     def random_move
-      moves = (0..5).to_a
+      moves = (0..6).to_a
       sim_board = board_copy
       moves.reject!{|col| sim_board.col_full?(col)}
       moves.sample
@@ -78,10 +78,10 @@ end
 class Human < Player
   # Prompts the player for a move until they put a valid choice in.
   def move
-    puts "Input a move Col 1 to 6"
+    puts "Input a move Col 1 to 7"
     col_to_add_to = gets.chomp.to_i
     col_to_add_to -= 1
-    until col_to_add_to >= 0 && col_to_add_to < 6
+    until col_to_add_to >= 0 && col_to_add_to < 7
       puts "Invalid column number, try again!"
       col_to_add_to = self.move
     end
