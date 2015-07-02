@@ -2,7 +2,7 @@
 # Ensures that Human and AI define their own "move" methods to be used by Game.
 class Player
   def move
-    raise NotImplemented
+    raise NotImplementedError
   end
 end
 

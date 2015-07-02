@@ -155,6 +155,36 @@ describe Board do
 
       end
 
+      context "forwardslash_winner" do
+
+        let(:board_forwardslash) {Board.new([[0],[1,0],[0,1,0],[1,1,1],[],[]])}
+
+        it "shouldn't return winner if not forwardslash winner" do
+          expect(board_forwardslash.winner).to be_nil
+        end
+
+        it "should return 0 as the winner if forwardslash win" do
+          board_forwardslash.move([3,0])
+          expect(board_forwardslash.winner).to eq(0)
+        end
+
+      end
+
+      context "backslash_winner" do
+
+        let(:board_backslash) {Board.new([[],[],[1,0,1],[0,1,0],[1,0],[0]])}
+
+        it "should not return winner if not backslash winner" do
+          expect(board_backslash.winner).to be_nil
+        end
+
+        it "should return winner if there's a backslash win" do
+          board_backslash.move([2,0])
+          expect(board_backslash.winner).to eq(0)
+        end
+
+      end
+
     end
   end
 end
