@@ -80,8 +80,21 @@ describe Calculator do
 
     describe "#divide" do
 
+      it "doesn't improperly divide numbers" do
+        expect(calculator.divide(4,2)).not_to eq(7)
+      end
+
       it "properly divides positive numbers" do
         expect(calculator.divide(4,2)).to eq(2)
+      end
+
+      it "properly divides floats" do
+        expect(calculator.divide(5.0,2.5)).to eq(2.0)
+      end
+
+      it "properly divides negative numbers" do
+        expect(calculator.divide(-2,2)).to eq(-1)
+        expect(calculator.divide(-12,-3)).to eq(4)
       end
 
       it "should raise an argument error if divide by 0" do
@@ -101,6 +114,96 @@ describe Calculator do
       end
 
     end
+
+    describe "#pow" do
+
+      it "shouldn't improperly raise powers" do
+        expect(calculator.pow(2,4)).not_to eq(8)
+      end
+
+      it "should properly raise integer powers" do
+        expect(calculator.pow(2,3)).to eq(8)
+        expect(calculator.pow(2,4)).to eq(16)
+        expect(calculator.pow(1, 1000)).to eq(1)
+        expect(calculator.pow(3,4)).to eq (81)
+      end
+
+      it "should properly raise negative powers" do
+        expect(calculator.pow(4,-1)).to eq(0.25)
+        expect(calculator.pow(-4, -1)).to eq(-0.25)
+      end
+
+      it "should raise fractional powers" do
+        expect(calculator.pow(4, 0.5)).to eq(2)
+        expect(calculator.pow(4, -0.5)).to eq(0.5)
+      end
+
+    end
+
+    describe "#sqrt" do
+
+      it "should not return incorrect square root" do
+        expect(calculator.sqrt(4)).not_to eq(3)
+      end
+
+      it "should return basic square root" do
+        expect(calculator.sqrt(4)).to eq(2)
+      end
+
+      it "should not raise error for positive input" do
+        expect{ calculator.sqrt(4)}.not_to raise_error
+      end
+
+      it "should raise ArgumentError for negative input" do
+        expect{ calculator.sqrt(-4)}.to raise_error(ArgumentError)
+      end
+
+      it "should return integer for round roots" do
+        expect(calculator.sqrt(4)).to be_a(Integer)
+      end
+
+      it "should return 2 place float for non-round roots" do
+        val = calculator.sqrt(2)
+        expect(val).to be_a(Float)
+        expect(val).to be_within(0.001).of(1.41)
+      end
+
+    end
+
+    describe "#memory=" do
+
+      it "should store a value if passed a value in argument" do
+        calculator.memory=(5)
+        expect(calculator.instance_variable_get(:@memory)).not_to be_nil
+      end
+
+      it "should return stored value when called" do
+        calculator.memory=(5)
+        expect(calculator.memory).to eq(5)
+      end
+
+      it "should not have stored value after called" do
+        calculator.memory=(5)
+        expect(calculator.memory).to eq(5)
+        expect(calculator.memory).to be_nil
+      end
+
+      it "should overwrite value if passed new value" do
+        calculator.memory=(5)
+        expect(calculator.instance_variable_get(:@memory)).to eq(5)
+        calculator.memory=(6)
+        expect(calculator.instance_variable_get(:@memory)).not_to eq(5)
+        expect(calculator.instance_variable_get(:@memory)).to eq(6)
+      end
+    end
+
+    describe "#memory" do
+      it "should return nil if memory is empty" do
+        expect(calculator.memory).to be_nil
+      end
+    end
+
+
 
   end
 
