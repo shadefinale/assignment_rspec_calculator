@@ -198,16 +198,85 @@ describe Calculator do
     end
 
     describe "#memory" do
+
       it "should return nil if memory is empty" do
         expect(calculator.memory).to be_nil
       end
+
+      it "should return the object in memory" do
+        calculator.memory=("hello")
+        expect(calculator.memory).to eq("hello")
+      end
+
+      it "clears memory when called" do
+        calculator.memory=("hello")
+        expect(calculator.memory).to eq("hello")
+        expect(calculator.memory).to be_nil
+      end
+
     end
-
-
 
   end
 
   context "strings" do
+
+    let(:calculator) { Calculator.new(true) }
+
+    describe "#add" do
+
+      it "returns a string when you add" do
+
+        expect(calculator.add(1,1)).to eq("2")
+
+      end
+
+    end
+
+    describe "#subtract" do
+
+      it "returns a string when you subtract" do
+
+        expect(calculator.subtract(2,0)).to eq("2")
+
+      end
+
+    end
+
+    describe "#pow" do
+
+      it "returns a string when you raise to a power" do
+
+        expect(calculator.pow(2,5)).to eq("32.0")
+
+      end
+
+    end
+
+    describe "#multiply" do
+
+      it "returns a string when you multiply" do
+
+        expect(calculator.multiply(0,0)).to eq("0")
+
+      end
+
+    end
+
+    describe "#divide" do
+
+      it "returns a string when you divide" do
+        expect(calculator.divide(5,1)).to eq("5")
+      end
+
+    end
+
+    describe "#sqrt" do
+
+      it "returns a string when you square root" do
+        expect(calculator.sqrt(25)).to eq("5")
+      end
+
+    end
 
   end
 
