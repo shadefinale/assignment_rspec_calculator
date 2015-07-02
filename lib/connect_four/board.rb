@@ -2,11 +2,15 @@
 class Board
   attr_reader :state
 
+  BOARD_WIDTH = 7
+  BOARD_HEIGHT = 6
+  CONNECT_SIZE = 4
+
   # This initializer allows us to easily make
   # new board objects with the same internal state but
   # with different object ids. (Deep Duplication)
   # The default state is an array of columns
-  def initialize(state = [[],[],[],[],[],[]])
+  def initialize(state = [[],[],[],[],[],[],[]])
     @state = []
     state.each do |col|
       @state << col.dup
@@ -30,7 +34,7 @@ class Board
   end
 
   def full?
-    return @state.reduce(0){|acc, col| acc += col.length} >= 36
+    return @state.reduce(0){|acc, col| acc += col.length} >= BOARD_HEIGHT * BOARD_WIDTH
   end
 
   # Visually represents the board to the player.
@@ -43,7 +47,7 @@ class Board
     puts ""
     print "-" * board_width
     puts ""
-    5.downto(0) do |idx|
+    (BOARD_WIDTH-1).downto(0) do |idx|
       0.upto(5) do |pos|
         print " | "
         @state[pos][idx]? (print "#{pretty_disc(@state[pos][idx])} ") : (print "  ")
@@ -56,7 +60,7 @@ class Board
   end
 
   def col_full?(col_no)
-    @state[col_no].length > 5
+    @state[col_no].length >= BOARD_HEIGHT
   end
 
   private
@@ -66,8 +70,8 @@ class Board
     end
 
     def horizontal_winner
-      0.upto(5) do |row|
-        0.upto(2) do |col|
+      0.upto(BOARD_HEIGHT-1) do |row|
+        0.upto(CONNECT_SIZE-1) do |col|
           if (@state[0 + col][row] == @state[1 + col][row]) &&
           (@state[0 + col][row] == @state[2 + col][row]) &&
           (@state[0 + col][row] == @state[3 + col][row])

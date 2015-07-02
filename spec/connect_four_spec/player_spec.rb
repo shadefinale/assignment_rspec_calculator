@@ -122,8 +122,24 @@ end
 
 describe Player do
 
+  let(:player_1) {Human.new}
+
   describe "#move" do
 
-    it "should ask for input again if "
+    it "should ask for input again one time if not between 1 and 6" do
+
+      allow(player_1).to receive(:gets).and_return("7","1")
+      expect(player_1.move).to eq(0)
+
+    end
+
+    it "should ask for input multiple times until valid" do
+
+      allow(player_1).to receive(:gets).and_return("7","8","10","p","whasd", "3")
+      expect(player_1.move).to eq(2)
+
+    end
+
+  end
 
 end

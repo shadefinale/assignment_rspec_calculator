@@ -6,13 +6,13 @@ class Game
 
   def initialize
     @players = []
+    @turn = 0
+    @board = Board.new
   end
 
   # Main Game loop
   def play
-    @board = Board.new
     instantiate_players # Are there two players or 1 vs ai?
-    @turn = 0
     until(@board.winner || @board.full?)
       @board.move(valid_move)
       @board.display
