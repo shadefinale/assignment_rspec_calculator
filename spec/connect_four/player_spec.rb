@@ -1,5 +1,5 @@
-require "connect_four/board"
-require "connect_four/player"
+require_relative '../../lib/connect_four/board.rb'
+require_relative '../../lib/connect_four/player.rb'
 
 describe Player do
 

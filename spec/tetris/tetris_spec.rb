@@ -1,4 +1,4 @@
-require 'tetris/tetris'
+require_relative '../../lib/tetris/tetris.rb'
 
 describe Board do
 

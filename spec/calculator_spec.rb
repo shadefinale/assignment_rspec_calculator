@@ -1,4 +1,4 @@
-require "calculator"
+require_relative '../lib/calculator.rb'
 
 describe Calculator do
 

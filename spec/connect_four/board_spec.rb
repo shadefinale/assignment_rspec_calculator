@@ -1,4 +1,4 @@
-require 'connect_four/board'
+require_relative '../../lib/connect_four/board.rb'
 
 describe Board do
 
